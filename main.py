@@ -31,10 +31,9 @@ fig, ax = plt.subplots()
 ret = odeint(deriv, y0, t, args=(N, init_beta, init_gamma))
 S, I, R = ret.T
 
-line1, = plt.plot(S)
-line2, = plt.plot(I)
-line3, = plt.plot(R)
-
+line1, = plt.plot(S, label="Susceptible")
+line2, = plt.plot(I, label="Infected")
+line3, = plt.plot(R, label="Recovered with Immunity")
 
 ax.set_xlabel('Time [s]')
 
@@ -45,20 +44,22 @@ plt.subplots_adjust(left=0.1, bottom=0.25)
 
 # Make a horizontal slider to control the frequency.
 beta_slider = Slider(
-    ax = plt.axes([0.1, 0.1, 0.8, 0.03], facecolor="red"),
-    label='β',
+    ax = plt.axes([0.1, 0.1, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
+    label='β (Transmission)',
     valmin=0,
     valmax=1,
     valinit=init_beta,
+    color="purple"
 )
 
 # Make a horizontal slider to control the frequency.
 gamma_slider = Slider(
-    ax = plt.axes([0.1, 0.06, 0.8, 0.03], facecolor="green"),
-    label='γ',
+    ax = plt.axes([0.1, 0.06, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
+    label='γ (Guérison)',
     valmin=0,
     valmax=1,
     valinit=init_gamma,
+    color="green"
 )
 
 # The function to be called anytime a slider's value changes
