@@ -41,13 +41,13 @@ ret = odeint(deriv, y0, t, args=(N, init_alpha, init_beta, init_gamma, init_micr
 S, E, I, R = ret.T
 
 line1, = plt.plot(S, label="Susceptible")
-
 line2, = plt.plot(I, label="Infected")
 line3, = plt.plot(R, label="Recovered with Immunity")
 line4, = plt.plot(E, label="Exposed")
 
 
 ax.set_xlabel('Time [days]')
+ax.legend()
 
 ax.margins(x=0)
 
