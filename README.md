@@ -2,7 +2,7 @@
 SIR & SEIR Model for a math exam.
 
 # Inspiration
-images.math.cnrs.fr/Modelisation-d-une-epidemie.html<br>
+https://images.math.cnrs.fr/Modelisation-d-une-epidemie.html<br>
 https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIR_model<br>
 https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SEIR_model<br>
 
