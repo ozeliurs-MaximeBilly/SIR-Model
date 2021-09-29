@@ -8,32 +8,21 @@ from matplotlib.widgets import Slider
 matplotlib.use('TkAgg')
 
 
-# --- FONCTIONS ---
+## Fonctions
 # Equations differentielles du modèle SEIR
-def SEIR(t_max, dt, alpha, beta, gamma, micro, mu, N, S0, E0, I0, R0):
-    t = 0
-    S, E, I, R = S0, E0, I0, R0
-    Sl, El, Il, Rl, Tl = ([], [], [], [], [])
-
-    while t < t_max:
-        S = -beta*S*I + mu*N + micro*S
-        E = beta*S*I - alpha*E - micro*E
-        I = alpha*E - (gamma+micro)*I
-        R = gamma*I - micro*R
-
-        Sl.append(S)
-        El.append(E)
-        Il.append(I)
-        Rl.append(R)
-        Tl.append(t)
-        t += dt
-
-    return Sl, El, Il, Rl
+def deriv(y, t, N, alpha, beta, gamma, micro, mu):
+    S, E, I, R = y
+    dSdt = -beta*S*I + mu*N + micro*S
+    dEdt = beta*S*I - alpha*E - micro*E
+    dIdt = alpha*E - (gamma+micro)*I
+    dRdt = gamma*I - micro*R
+    return dSdt, dEdt, dIdt, dRdt
 
 
 # The function to be called anytime a slider's value changes
 def update(val):
-    S, E, I, R = SEIR(160, 0.1, alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, mu_slider.val, N, S0, E0, I0, R0)
+    ret = odeint(deriv, (S0, E0, I0, R0), t, args=(N, alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, mu_slider.val))
+    S, E, I, R = ret.T
     line1.set_ydata(S)
     line2.set_ydata(I)
     line3.set_ydata(R)
@@ -41,7 +30,7 @@ def update(val):
     fig.canvas.draw_idle()
 
 
-# --- PARAMETRES INITIAUX ---
+## Paramètres Initiaux
 N = 1000        # Population
 E0 = 0          # Nombre initial de personnes infectées non-infectieuses
 I0 = 5          # Nombre initial de personnes infectées infectieuses
@@ -64,7 +53,8 @@ fig, ax = plt.subplots()
 ax.margins(x=0)
 
 # Résolution des équations différentielles avec les paramètres Initiaux
-S, E, I, R = SEIR(160, 0.1, init_alpha, init_beta, init_gamma, init_micro, init_mu, N, S0, E0, I0, R0)
+ret = odeint(deriv, (S0, E0, I0, R0), t, args=(N, init_alpha, init_beta, init_gamma, init_micro, init_mu))
+S, E, I, R = ret.T
 
 # Ajout des courbes d'évolution avec leurs labels
 line1, = plt.plot(S, label="Susceptible")
