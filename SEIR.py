@@ -1,61 +1,73 @@
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 from matplotlib.widgets import Slider
 
-# The SIR model differential equations.
-def deriv(y, t, N, alpha, beta, gamma, micro, nu):
+# Configuration de l'affichage de matplotlib
+matplotlib.use('TkAgg')
+
+
+## Fonctions
+# Equations differentielles du modèle SEIR
+def deriv(y, t, N, alpha, beta, gamma, micro, mu):
     S, E, I, R = y
-    dSdt = micro*N - micro*S - (beta*I*S)/N
-    dEdt = (beta*I*S)/N - (micro+alpha)*E
+    dSdt = -beta*S*I + mu*N + micro*S
+    dEdt = beta*S*I - alpha*E - micro*E
     dIdt = alpha*E - (gamma+micro)*I
     dRdt = gamma*I - micro*R
     return dSdt, dEdt, dIdt, dRdt
 
-# Total population, N.
-N = 1000
-# Initial number of infected and recovered individuals, I0 and R0.
-I0 = 0
-R0 = 0
-E0 = 1
-# Everyone else, S0, is susceptible to infection initially.
-S0 = N - I0 - R0 - E0
+
+# The function to be called anytime a slider's value changes
+def update(val):
+    ret = odeint(deriv, (S0, E0, I0, R0), t, args=(N, alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, mu_slider.val))
+    S, E, I, R = ret.T
+    line1.set_ydata(S)
+    line2.set_ydata(I)
+    line3.set_ydata(R)
+    line4.set_ydata(E)
+    fig.canvas.draw_idle()
+
+
+## Paramètres Initiaux
+N = 1000        # Population
+E0 = 0          # Nombre initial de personnes infectées non-infectieuses
+I0 = 5          # Nombre initial de personnes infectées infectieuses
+R0 = 0          # Nombre initial de personnes retirées
+S0 = N - (I0 + R0 + E0) # Nombre initial de personnes Saines
+
 
 # Contact rate, beta, and mean recovery rate, gamma, (in 1/days).
-init_alpha = 0.75     # 0-1 incubation
-init_beta = 0.8     #0-1 taux de transmission
-init_gamma = 0.05     #0-1 guérison
-init_micro = 0.01     #0-1 mortalité
-init_mu = 0.009    #0-0.5 natalité
+init_alpha = 0.75     # Taux d'incubation (0-1)
+init_beta = 0.8     # Taux de transmission (0-1)
+init_gamma = 0.05     # Taux de guérison (0-1)
+init_micro = 0.01     # Taux de mortalité (0-1)
+init_mu = 0.009    # Taux de natalité (0-0.5)
 
-# A grid of time points (in days)
-t = np.linspace(0, 160, 160)
+# Une grille de points de temps (en jours)
+t = np.linspace(0, 50, 50)
 
-# Initial conditions vector
-y0 = S0, E0, I0, R0
-
-# Create the figure and the line that we will manipulate
+# Creation & Configuration d'un subplot pour l'affichage des courbes d'evolution
 fig, ax = plt.subplots()
+ax.margins(x=0)
 
-ret = odeint(deriv, y0, t, args=(N, init_alpha, init_beta, init_gamma, init_micro, init_mu))
+# Résolution des équations différentielles avec les paramètres Initiaux
+ret = odeint(deriv, (S0, E0, I0, R0), t, args=(N, init_alpha, init_beta, init_gamma, init_micro, init_mu))
 S, E, I, R = ret.T
 
+# Ajout des courbes d'évolution avec leurs labels
 line1, = plt.plot(S, label="Susceptible")
 line2, = plt.plot(I, label="Infected")
 line3, = plt.plot(R, label="Recovered with Immunity")
 line4, = plt.plot(E, label="Exposed")
 
-
+# Ajustement des tracés principaux pour faire de la place aux sliders
+plt.subplots_adjust(left=0.1, bottom=0.4)
 ax.set_xlabel('Time [days]')
 ax.legend()
 
-ax.margins(x=0)
-ax.legend()
-
-# adjust the main plot to make room for the sliders
-plt.subplots_adjust(left=0.1, bottom=0.4)
-
-# Make a horizontal slider to control the frequency.
+# Slider Horizontal alpha
 alpha_slider = Slider(
     ax = plt.axes([0.1, 0.25, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
     label='alpha (Incubation)',
@@ -65,7 +77,7 @@ alpha_slider = Slider(
     color="green"
 )
 
-# Make a horizontal slider to control the frequency.
+# Slider Horizontal beta
 beta_slider = Slider(
     ax = plt.axes([0.1, 0.20, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
     label='β (Transmission)',
@@ -75,7 +87,7 @@ beta_slider = Slider(
     color="purple"
 )
 
-# Make a horizontal slider to control the frequency.
+# Slider Horizontal gamma
 gamma_slider = Slider(
     ax = plt.axes([0.1, 0.15, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
     label='γ (Guérison)',
@@ -85,7 +97,7 @@ gamma_slider = Slider(
     color="green"
 )
 
-# Make a horizontal slider to control the frequency.
+# Slider Horizontal micro
 micro_slider = Slider(
     ax = plt.axes([0.1, 0.10, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
     label='micro (Mortalité)',
@@ -95,7 +107,7 @@ micro_slider = Slider(
     color="green"
 )
 
-# Make a horizontal slider to control the frequency.
+# Slider Horizontal mu
 mu_slider = Slider(
     ax = plt.axes([0.1, 0.05, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
     label='mu (Natalité)',
@@ -104,16 +116,6 @@ mu_slider = Slider(
     valinit=init_mu,
     color="green"
 )
-
-# The function to be called anytime a slider's value changes
-def update(val):
-    ret = odeint(deriv, y0, t, args=(N, alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, mu_slider.val))
-    S, E, I, R = ret.T
-    line1.set_ydata(S)
-    line2.set_ydata(I)
-    line3.set_ydata(R)
-    line4.set_ydata(E)
-    fig.canvas.draw_idle()
 
 
 # register the update function with each slider
