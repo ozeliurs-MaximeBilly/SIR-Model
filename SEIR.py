@@ -16,6 +16,7 @@ def SEIR(t_max, dt, alpha, beta, gamma, micro, mu, N, S0, E0, I0, R0):
     Sl, El, Il, Rl, Tl = ([], [], [], [], [])
 
     while t < t_max:
+        # A revoir !!!!!
         S = -beta*S*I + mu*N + micro*S
         E = beta*S*I - alpha*E - micro*E
         I = alpha*E - (gamma+micro)*I
