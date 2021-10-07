@@ -33,7 +33,8 @@ def update(val):
 
 
 ## Paramètres Initiaux
-Sim_Time = 50   # Simulation time
+Sim_Time = 100   # Simulation time
+Sim_Precision = 100 # Samples per day
 
 N0 = 1000        # Population
 E0 = 0          # Nombre initial de personnes infectées non-infectieuses
@@ -46,11 +47,11 @@ S0 = N0 - (I0 + R0 + E0) # Nombre initial de personnes Saines
 init_alpha = 0.75     # Taux d'incubation (0-1)
 init_beta = 0.1     # Taux de transmission (0-1)
 init_gamma = 0.05     # Taux de guérison (0-1)
-init_micro = 0.01     # Taux de mortalité (0-1)
-init_mu = 0.009    # Taux de natalité (0-0.5)
+init_micro = 0.2     # Taux de mortalité (0-1)
+init_mu = 0.2    # Taux de natalité (0-0.5)
 
 # Une grille de points de temps (en jours)
-t = np.linspace(0, Sim_Time, Sim_Time*100)
+t = np.linspace(0, Sim_Time, Sim_Time*Sim_Precision)
 
 # Creation & Configuration d'un subplot pour l'affichage des courbes d'evolution
 fig, ax = plt.subplots()
@@ -81,17 +82,17 @@ alpha_slider = Slider(
     valmin=0,
     valmax=1,
     valinit=init_alpha,
-    color="green"
+    color="grey"
 )
 
 # Slider Horizontal beta
 beta_slider = Slider(
     ax = plt.axes([0.1, 0.20, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
     label='β (Transmission)',
-    valmin=0.01,
-    valmax=0.15,
+    valmin=0,
+    valmax=0.05,
     valinit=init_beta,
-    color="purple"
+    color="red"
 )
 
 # Slider Horizontal gamma
@@ -107,21 +108,21 @@ gamma_slider = Slider(
 # Slider Horizontal micro
 micro_slider = Slider(
     ax = plt.axes([0.1, 0.10, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
-    label='micro (Mortalité)',
+    label='μ (Mortalité)',
     valmin=0,
     valmax=0.2,
     valinit=init_micro,
-    color="green"
+    color="black"
 )
 
 # Slider Horizontal mu
 mu_slider = Slider(
     ax = plt.axes([0.1, 0.05, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
-    label='mu (Natalité)',
+    label='ν (Natalité)',
     valmin=0,
     valmax=0.5,
     valinit=init_mu,
-    color="green"
+    color="white"
 )
 
 
