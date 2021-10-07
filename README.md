@@ -12,3 +12,4 @@ https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SEIR_mode
 # The Help needed
 https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html<br>
 https://www.f-legrand.fr/scidoc/docimg/numerique/euler/euler/euler.html<br>
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html#scipy.integrate.solve_ivp
