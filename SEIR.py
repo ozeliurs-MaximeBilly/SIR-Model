@@ -6,40 +6,40 @@ from matplotlib.widgets import Slider
 
 # Configuration de l'affichage de matplotlib
 matplotlib.use('Qt5Agg')
-#matplotlib.use('TkAgg')
 
 
 ## Fonctions
 # Equations differentielles du modèle SEIR
-def deriv(t, y, N, alpha, beta, gamma, micro, mu):
-    S, E, I, R = y
+def deriv(t, y, alpha, beta, gamma, micro, mu):
+    S, E, I, R, N = y
     dSdt = -beta*S*I + mu*N + micro*S
     dEdt = beta*S*I - alpha*E - micro*E
     dIdt = alpha*E - (gamma+micro)*I
     dRdt = gamma*I - micro*R
-    return dSdt, dEdt, dIdt, dRdt
+    dNdt = mu*N - micro*N
+    return dSdt, dEdt, dIdt, dRdt, dNdt
 
 
 # The function to be called anytime a slider's value changes
 def update(val):
-    global fig, line1, line2, line3, line4
-    ret = solve_ivp(fun=deriv, t_span=(0, Sim_Time), t_eval=t, y0=(S0, E0, I0, R0), args=(N, alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, mu_slider.val))
-    S, E, I, R = ret.y
+    ret = solve_ivp(fun=deriv, t_span=(0, Sim_Time), t_eval=t, y0=(S0, E0, I0, R0, N0), args=(alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, mu_slider.val))
+    S, E, I, R, N = ret.y
     line1.set_ydata(S)
     line2.set_ydata(I)
     line3.set_ydata(R)
     line4.set_ydata(E)
+    line5.set_ydata(N)
     fig.canvas.draw_idle()
 
 
 ## Paramètres Initiaux
 Sim_Time = 50   # Simulation time
 
-N = 1000        # Population
+N0 = 1000        # Population
 E0 = 0          # Nombre initial de personnes infectées non-infectieuses
 I0 = 5          # Nombre initial de personnes infectées infectieuses
 R0 = 0          # Nombre initial de personnes retirées
-S0 = N - (I0 + R0 + E0) # Nombre initial de personnes Saines
+S0 = N0 - (I0 + R0 + E0) # Nombre initial de personnes Saines
 
 
 # Contact rate, beta, and mean recovery rate, gamma, (in 1/days).
@@ -57,14 +57,15 @@ fig, ax = plt.subplots()
 ax.margins(x=0)
 
 # Résolution des équations différentielles avec les paramètres Initiaux
-ret = solve_ivp(fun=deriv, t_span=(0, Sim_Time), t_eval=t, y0=(S0, E0, I0, R0), args=(N, init_alpha, init_beta, init_gamma, init_micro, init_mu))
-S, E, I, R = ret.y
+ret = solve_ivp(fun=deriv, t_span=(0, Sim_Time), t_eval=t, y0=(S0, E0, I0, R0, N0), args=(init_alpha, init_beta, init_gamma, init_micro, init_mu))
+S, E, I, R, N = ret.y
 
 # Ajout des courbes d'évolution avec leurs labels
 line1, = plt.plot(S, label="Susceptible")
 line2, = plt.plot(I, label="Infected")
 line3, = plt.plot(R, label="Recovered with Immunity")
 line4, = plt.plot(E, label="Exposed")
+line5, = plt.plot(N, label="Population")
 
 # Ajustement des tracés principaux pour faire de la place aux sliders
 plt.subplots_adjust(left=0.1, bottom=0.4)
