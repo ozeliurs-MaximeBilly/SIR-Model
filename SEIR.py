@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from scipy.integrate import odeint, solve_ivp
+from scipy.integrate import solve_ivp
 from matplotlib.widgets import Slider
 
 # Configuration de l'affichage de matplotlib
@@ -22,7 +22,7 @@ def deriv(t, y, alpha, beta, gamma, micro, mu):
 
 # The function to be called anytime a slider's value changes
 def update(val):
-    ret = solve_ivp(fun=deriv, t_span=(0, Sim_Time), t_eval=t, y0=(S0, E0, I0, R0, N0), args=(alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, mu_slider.val))
+    ret = solve_ivp(fun=deriv, t_span=(0, Sim_Time), t_eval=t, y0=(S0, E0, I0, R0, N0), method='DOP853', args=(alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, mu_slider.val))
     S, E, I, R, N = ret.y
     line1.set_ydata(S)
     line2.set_ydata(I)
@@ -44,7 +44,7 @@ S0 = N0 - (I0 + R0 + E0) # Nombre initial de personnes Saines
 
 # Contact rate, beta, and mean recovery rate, gamma, (in 1/days).
 init_alpha = 0.75     # Taux d'incubation (0-1)
-init_beta = 0.8     # Taux de transmission (0-1)
+init_beta = 0.1     # Taux de transmission (0-1)
 init_gamma = 0.05     # Taux de guérison (0-1)
 init_micro = 0.01     # Taux de mortalité (0-1)
 init_mu = 0.009    # Taux de natalité (0-0.5)
@@ -55,9 +55,10 @@ t = np.linspace(0, Sim_Time, Sim_Time)
 # Creation & Configuration d'un subplot pour l'affichage des courbes d'evolution
 fig, ax = plt.subplots()
 ax.margins(x=0)
+ax.autoscale(True)
 
 # Résolution des équations différentielles avec les paramètres Initiaux
-ret = solve_ivp(fun=deriv, t_span=(0, Sim_Time), t_eval=t, y0=(S0, E0, I0, R0, N0), args=(init_alpha, init_beta, init_gamma, init_micro, init_mu))
+ret = solve_ivp(fun=deriv, t_span=(0, Sim_Time), t_eval=t, y0=(S0, E0, I0, R0, N0), method='DOP853', args=(init_alpha, init_beta, init_gamma, init_micro, init_mu))
 S, E, I, R, N = ret.y
 
 # Ajout des courbes d'évolution avec leurs labels
@@ -86,8 +87,8 @@ alpha_slider = Slider(
 beta_slider = Slider(
     ax = plt.axes([0.1, 0.20, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
     label='β (Transmission)',
-    valmin=0,
-    valmax=1,
+    valmin=0.01,
+    valmax=0.15,
     valinit=init_beta,
     color="purple"
 )
@@ -107,7 +108,7 @@ micro_slider = Slider(
     ax = plt.axes([0.1, 0.10, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
     label='micro (Mortalité)',
     valmin=0,
-    valmax=1,
+    valmax=0.2,
     valinit=init_micro,
     color="green"
 )
