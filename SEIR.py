@@ -6,6 +6,7 @@ from matplotlib.widgets import Slider
 
 # Configuration de l'affichage de matplotlib
 matplotlib.use('Qt5Agg')
+#matplotlib.use('TkAgg')
 
 
 ## Fonctions
