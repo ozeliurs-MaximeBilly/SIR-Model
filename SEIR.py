@@ -1,40 +1,29 @@
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from scipy.integrate import odeint
+from scipy.integrate import odeint, solve_ivp
 from matplotlib.widgets import Slider
 
 # Configuration de l'affichage de matplotlib
-matplotlib.use('TkAgg')
+matplotlib.use('Qt5Agg')
 
 
-# --- FONCTIONS ---
+## Fonctions
 # Equations differentielles du modèle SEIR
-def SEIR(t_max, dt, alpha, beta, gamma, micro, mu, N, S0, E0, I0, R0):
-    t = 0
-    S, E, I, R = S0, E0, I0, R0
-    Sl, El, Il, Rl, Tl = ([], [], [], [], [])
-
-    while t < t_max:
-        # A revoir !!!!!
-        S = -beta*S*I + mu*N + micro*S
-        E = beta*S*I - alpha*E - micro*E
-        I = alpha*E - (gamma+micro)*I
-        R = gamma*I - micro*R
-
-        Sl.append(S)
-        El.append(E)
-        Il.append(I)
-        Rl.append(R)
-        Tl.append(t)
-        t += dt
-
-    return Sl, El, Il, Rl
+def deriv(t, y, N, alpha, beta, gamma, micro, mu):
+    S, E, I, R = y
+    dSdt = -beta*S*I + mu*N + micro*S
+    dEdt = beta*S*I - alpha*E - micro*E
+    dIdt = alpha*E - (gamma+micro)*I
+    dRdt = gamma*I - micro*R
+    return dSdt, dEdt, dIdt, dRdt
 
 
 # The function to be called anytime a slider's value changes
 def update(val):
-    S, E, I, R = SEIR(160, 0.1, alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, mu_slider.val, N, S0, E0, I0, R0)
+    global fig, line1, line2, line3, line4
+    ret = solve_ivp(fun=deriv, t_span=(0, Sim_Time), t_eval=t, y0=(S0, E0, I0, R0), args=(N, alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, mu_slider.val))
+    S, E, I, R = ret.y
     line1.set_ydata(S)
     line2.set_ydata(I)
     line3.set_ydata(R)
@@ -42,7 +31,9 @@ def update(val):
     fig.canvas.draw_idle()
 
 
-# --- PARAMETRES INITIAUX ---
+## Paramètres Initiaux
+Sim_Time = 50   # Simulation time
+
 N = 1000        # Population
 E0 = 0          # Nombre initial de personnes infectées non-infectieuses
 I0 = 5          # Nombre initial de personnes infectées infectieuses
@@ -58,14 +49,15 @@ init_micro = 0.01     # Taux de mortalité (0-1)
 init_mu = 0.009    # Taux de natalité (0-0.5)
 
 # Une grille de points de temps (en jours)
-t = np.linspace(0, 50, 50)
+t = np.linspace(0, Sim_Time, Sim_Time)
 
 # Creation & Configuration d'un subplot pour l'affichage des courbes d'evolution
 fig, ax = plt.subplots()
 ax.margins(x=0)
 
 # Résolution des équations différentielles avec les paramètres Initiaux
-S, E, I, R = SEIR(160, 0.1, init_alpha, init_beta, init_gamma, init_micro, init_mu, N, S0, E0, I0, R0)
+ret = solve_ivp(fun=deriv, t_span=(0, Sim_Time), t_eval=t, y0=(S0, E0, I0, R0), args=(N, init_alpha, init_beta, init_gamma, init_micro, init_mu))
+S, E, I, R = ret.y
 
 # Ajout des courbes d'évolution avec leurs labels
 line1, = plt.plot(S, label="Susceptible")
