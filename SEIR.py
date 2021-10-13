@@ -18,7 +18,7 @@ def deriv(_t, y, alpha, beta, gamma, micro, nu):
     Methode regroupant les équations differentielles du modèle SEIR.
     """
     S, E, I, R = y
-    dSdt = -beta * S * I + nu * (S + E + I + R) + micro * S
+    dSdt = -beta * S * I + nu * (S + E + I + R) - micro * S
     dEdt = beta * S * I - alpha * E - micro * E
     dIdt = alpha * E - (gamma + micro) * I
     dRdt = gamma * I - micro * R
@@ -54,10 +54,10 @@ S0 = N0 - (I0 + R0 + E0)  # Nombre initial de personnes Saines
 
 # Contact rate, beta, and mean recovery rate, gamma, (in 1/days).
 INIT_ALPHA = 0.75  # Taux d'incubation (0-1)
-INIT_BETA = 0.1  # Taux de transmission (0-1)
-INIT_GAMMA = 0.05  # Taux de guérison (0-1)
+INIT_BETA = 0.02  # Taux de transmission (0-1)
+INIT_GAMMA = 0.45  # Taux de guérison (0-1)
 INIT_MICRO = 0.2  # Taux de mortalité (0-1)
-INIT_NU = 0.2  # Taux de natalité (0-0.5)
+INIT_NU = 0.25  # Taux de natalité (0-0.5)
 
 # Une grille de points de temps (en jours)
 t = np.linspace(0, SIM_TIME, SIM_TIME * SIM_PRECISION)
@@ -88,7 +88,7 @@ ax.legend()
 # Slider Horizontal alpha
 alpha_slider = Slider(
     ax=plt.axes([0.1, 0.25, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
-    label='alpha (Incubation)',
+    label='α (Incubation)',
     valmin=0,
     valmax=1,
     valinit=INIT_ALPHA,
@@ -132,7 +132,7 @@ nu_slider = Slider(
     valmin=0,
     valmax=0.5,
     valinit=INIT_NU,
-    color="white"
+    color="pink"
 )
 
 # register the update function with each slider

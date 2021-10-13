@@ -1,7 +1,12 @@
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 from matplotlib.widgets import Slider, Button
+
+# Configuration de l'affichage de matplotlib
+# matplotlib.use('Qt5Agg') # A utiliser sur Linux
+matplotlib.use('TkAgg') # A utiliser sur Windows
 
 # The SIR model differential equations.
 def deriv(y, t, N, beta, gamma):
@@ -36,8 +41,6 @@ line2, = plt.plot(I, label="Infected")
 line3, = plt.plot(R, label="Recovered with Immunity")
 
 ax.set_xlabel('Time [s]')
-
-ax.label()
 
 ax.margins(x=0)
 
