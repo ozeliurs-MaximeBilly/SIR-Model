@@ -7,8 +7,8 @@ from scipy.integrate import solve_ivp
 from matplotlib.widgets import Slider
 
 # Configuration de l'affichage de matplotlib
-# matplotlib.use('Qt5Agg')
-matplotlib.use('TkAgg')
+# matplotlib.use('Qt5Agg') # A utiliser sur Linux
+matplotlib.use('TkAgg') # A utiliser sur Windows
 
 
 # --- Fonctions ---
