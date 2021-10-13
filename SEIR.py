@@ -26,7 +26,7 @@ def deriv(_t, y, alpha, beta, gamma, micro, nu):
 
 
 # The function to be called anytime a slider's value changes
-def update():
+def update(_x):
     """
     Méthode appelée a chaque changement des sliders. Recalcule les courbes et les affiche.
     """
