@@ -43,6 +43,7 @@ line3, = plt.plot(R, label="Recovered with Immunity")
 ax.set_xlabel('Time [s]')
 
 ax.margins(x=0)
+ax.legend()
 
 # adjust the main plot to make room for the sliders
 plt.subplots_adjust(left=0.1, bottom=0.25)
