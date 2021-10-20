@@ -44,7 +44,7 @@ def update(_x):
 
 # --- Paramètres Initiaux ---
 SIM_TIME = 100  # Simulation time
-SIM_PRECISION = 100  # Samples per day
+SIM_PRECISION = 20  # Samples per day
 
 N0 = 1000  # Population
 E0 = 0  # Nombre initial de personnes infectées non-infectieuses
