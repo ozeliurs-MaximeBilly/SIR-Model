@@ -25,8 +25,8 @@ V0 = 0  # Nombre initial de personnes vacinnées
 M0 = 0  # Nombre initial de personnes mortes liées a la maladie
 
 # Precision et durée de la simulation
-SIM_PRECISION = 1000
-SIM_MULTIPLIER = 2
+SIM_PRECISION =  250
+SIM_MULTIPLIER = 50
 
 
 def solve(S0, E0, I0, R0, V0, M0, alpha, beta, gamma, micro, nu, epsilon, delta):
@@ -37,9 +37,9 @@ def solve(S0, E0, I0, R0, V0, M0, alpha, beta, gamma, micro, nu, epsilon, delta)
 
         #Equations
         dSdt = -beta*St*It + nu*(St+Et+It+Rt+Vt) - micro*St - epsilon*St
-        dEdt = beta*St*It - alpha*Et - micro*Et
+        dEdt = beta*St*It - alpha*Et - micro*Et  + delta*Rt
         dIdt = alpha*Et - gamma*It - micro*It - It*delta
-        dRdt = gamma*It - micro*Rt - epsilon*Rt
+        dRdt = gamma*It - micro*Rt - epsilon*Rt  - delta*Rt
         dVdt = epsilon*St + epsilon*Rt - micro*Vt
         dMdt = It*delta
 
@@ -63,7 +63,7 @@ def update(_x):
     line3.set_ydata(I)
     line4.set_ydata(R)
     line5.set_ydata(V)
-    line6.sety_data(M)
+    line6.set_ydata(M)
     N = [S[i] + E[i] + I[i] + R[i] + V[i] for i in range(len(S))]
     line7.set_ydata(N)
     fig.canvas.draw_idle()
