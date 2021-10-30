@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 
 # Configuration de l'affichage de matplotlib
-# matplotlib.use('Qt5Agg') # A utiliser sur Linux
-matplotlib.use('TkAgg') # A utiliser sur Windows
+# matplotlib.use('Qt5Agg')  # A utiliser sur Linux
+matplotlib.use('TkAgg')  # A utiliser sur Windows
 
 # Contact rate, beta, and mean recovery rate, gamma, (in 1/days).
 INIT_ALPHA = 0.75  # Taux d'incubation (0-1)
@@ -12,7 +12,7 @@ INIT_BETA = 0.8  # Taux de transmission (0-1)
 INIT_GAMMA = 0.05  # Taux de guérison (0-1)
 INIT_MICRO = 0.01  # Taux de mortalité (0-1)
 INIT_NU = 0.009  # Taux de natalité (0-0.5)
-INIT_EPSILON = 1.0 # Taux de vaccination (0-2)
+INIT_EPSILON = 1.0  # Taux de vaccination (0-2)
 
 # Populations initiales
 N0 = 1000  # Population
@@ -33,7 +33,7 @@ def solve(S0, E0, I0, R0, V0, alpha, beta, gamma, micro, nu, epsilon):
     for o in range(SIM_PRECISION*SIM_MULTIPLIER):
         St, Et, It, Rt, Vt = S[o-1], E[o-1], I[o-1], R[o-1], V[o-1]
 
-        #Equations
+        # Equations
         dSdt = -beta*St*It + nu*(St+Et+It+Rt+Vt) - micro*St - epsilon*St
         dEdt = beta*St*It - alpha*Et - micro*Et
         dIdt = alpha*Et - gamma*It - micro*It
@@ -78,7 +78,7 @@ line5, = plt.plot(V, label="Vaccinated")
 line6, = plt.plot(N, label="Population")
 
 # Ajustement des tracés principaux pour faire de la place aux sliders
-plt.subplots_adjust(left=0.1, bottom=0.4)
+plt.subplots_adjust(left=0.1, bottom=0.5, top=1)
 ax.set_xlabel('Time [days]')
 ax.legend()
 

@@ -25,7 +25,7 @@ V0 = 0  # Nombre initial de personnes vacinnées
 M0 = 0  # Nombre initial de personnes mortes liées a la maladie
 
 # Precision et durée de la simulation
-SIM_PRECISION =  250
+SIM_PRECISION = 250
 SIM_MULTIPLIER = 50
 
 
@@ -37,9 +37,9 @@ def solve(S0, E0, I0, R0, V0, M0, alpha, beta, gamma, micro, nu, epsilon, delta)
 
         #Equations
         dSdt = -beta*St*It + nu*(St+Et+It+Rt+Vt) - micro*St - epsilon*St
-        dEdt = beta*St*It - alpha*Et - micro*Et  + delta*Rt
+        dEdt = beta*St*It - alpha*Et - micro*Et + delta*Rt
         dIdt = alpha*Et - gamma*It - micro*It - It*delta
-        dRdt = gamma*It - micro*Rt - epsilon*Rt  - delta*Rt
+        dRdt = gamma*It - micro*Rt - epsilon*Rt - delta*Rt
         dVdt = epsilon*St + epsilon*Rt - micro*Vt
         dMdt = It*delta
 
@@ -84,7 +84,7 @@ line6, = plt.plot(M, label="Dead by Disease")
 line7, = plt.plot(N, label="Population")
 
 # Ajustement des tracés principaux pour faire de la place aux sliders
-plt.subplots_adjust(left=0.1, bottom=0.4)
+plt.subplots_adjust(left=0.1, bottom=0.5, top=1)
 ax.set_xlabel('Time [days]')
 ax.legend()
 

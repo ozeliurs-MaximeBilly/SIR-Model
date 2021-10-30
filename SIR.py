@@ -46,7 +46,7 @@ ax.margins(x=0)
 ax.legend()
 
 # adjust the main plot to make room for the sliders
-plt.subplots_adjust(left=0.1, bottom=0.25)
+plt.subplots_adjust(left=0.1, bottom=0.5, top=1)
 
 # Make a horizontal slider to control the frequency.
 beta_slider = Slider(

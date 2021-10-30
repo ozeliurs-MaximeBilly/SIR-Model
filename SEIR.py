@@ -81,7 +81,7 @@ N = [S[i] + E[i] + I[i] + R[i] for i in range(len(S))]
 line5, = plt.plot(N, label="Population")
 
 # Ajustement des tracés principaux pour faire de la place aux sliders
-plt.subplots_adjust(left=0.1, bottom=0.4)
+plt.subplots_adjust(left=0.1, bottom=0.5, top=1)
 ax.set_xlabel('Time [days]')
 ax.legend()
 
