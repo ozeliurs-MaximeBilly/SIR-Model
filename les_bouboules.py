@@ -1,4 +1,5 @@
 import random
+import time
 from math import sqrt
 import numpy as np
 import matplotlib
@@ -140,33 +141,45 @@ def make_frame(x):
     return mplfig_to_npimage(fig)
 
 
+def bouboules_without_render(duration, fps):
+    for i in range(duration*fps):
+        print(f"\r{i}/{duration * fps} ~{round(i / (duration * fps) * 100, 1)} %", end="")
+        i = i/fps
+        update(i)
+
+
 def main(ren):
     global list_of_ppl
     list_of_ppl = gen_ppl()
     render(list_of_ppl)
-    if not ren:
+    if ren == 0:
+        t = time.perf_counter()
         ani = FuncAnimation(fig, update, interval=10)
+        print(f"The simulation + render took {time.perf_counter()-t} s.")
         plt.show()
-    else:
+    elif ren == 1:
         animation = VideoClip(make_frame, duration=40)
         animation.write_gif("output.gif", fps=20)
+    elif ren == 2:
+        t = time.perf_counter()
+        bouboules_without_render(40,20)
+        print(f"The simulation took {time.perf_counter() - t} s.")
 
 
 if __name__ == "__main__":
-    main(True)
+    main(2)
 
+    days = [x[0] for x in history]
+    S = [x[1] for x in history]
+    E = [x[2] for x in history]
+    I = [x[3] for x in history]
+    R = [x[4] for x in history]
 
-days = [x[0] for x in history]
-S = [x[1] for x in history]
-E = [x[2] for x in history]
-I = [x[3] for x in history]
-R = [x[4] for x in history]
+    plt.subplot(2, 1, 1)
+    plt.bar(days, R, color='grey', label='R')
+    plt.bar(days, I, color='red', bottom=R, label='I')
+    plt.bar(days, E, color='yellow', bottom=[I[i]+R[i] for i in range(len(I))], label='E')
+    plt.bar(days, S, color='blue', bottom=[E[i]+I[i]+R[i] for i in range(len(I))], label='S')
 
-plt.subplot(2, 1, 1)
-plt.bar(days, R, color='grey', label='R')
-plt.bar(days, I, color='red', bottom=R, label='I')
-plt.bar(days, E, color='yellow', bottom=[I[i]+R[i] for i in range(len(I))], label='E')
-plt.bar(days, S, color='blue', bottom=[E[i]+I[i]+R[i] for i in range(len(I))], label='S')
-
-plt.legend()
-plt.show()
+    plt.legend()
+    plt.show()
