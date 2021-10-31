@@ -1,12 +1,6 @@
 # SIR-Model
 SIR & SEIR Model for a math exam.
 
-# Gifs
-![IMG](https://github.com/ozeliurs-MaximeBilly/SIR-Model/blob/main/gifs/Mort%3DNat.gif)
-![IMG](https://github.com/ozeliurs-MaximeBilly/SIR-Model/blob/main/gifs/Mort%3D0.gif)
-![IMG](https://github.com/ozeliurs-MaximeBilly/SIR-Model/blob/main/gifs/Nat%3D0.gif)
-
-
 # The Maths
 ![SEIR Model](https://raw.githubusercontent.com/ozeliurs-MaximeBilly/SIR-Model/main/content/SEIR.jpg)
 
@@ -35,3 +29,8 @@ SIR & SEIR Model for a math exam.
 [ ] Simulation SEIR
 [ ] Expliquer le moteur
 [ ] Conclusion
+
+# Gifs
+![IMG](https://github.com/ozeliurs-MaximeBilly/SIR-Model/blob/main/gifs/Mort%3DNat.gif)
+![IMG](https://github.com/ozeliurs-MaximeBilly/SIR-Model/blob/main/gifs/Mort%3D0.gif)
+![IMG](https://github.com/ozeliurs-MaximeBilly/SIR-Model/blob/main/gifs/Nat%3D0.gif)
