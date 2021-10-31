@@ -31,6 +31,9 @@ SIR & SEIR Model for a math exam.
 [ ] Conclusion
 
 # Gifs
+## Mortalité = Natalité
 ![IMG](https://github.com/ozeliurs-MaximeBilly/SIR-Model/blob/main/gifs/Mort%3DNat.gif)
+## Mortalité = 0%
 ![IMG](https://github.com/ozeliurs-MaximeBilly/SIR-Model/blob/main/gifs/Mort%3D0.gif)
+## Natalité = 0%
 ![IMG](https://github.com/ozeliurs-MaximeBilly/SIR-Model/blob/main/gifs/Nat%3D0.gif)
