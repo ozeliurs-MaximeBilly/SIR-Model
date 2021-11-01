@@ -19,16 +19,16 @@ SIR & SEIR Model for a math exam.
 [scipy.integrate.solve_ivp](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html#scipy.integrate.solve_ivp)
 
 # TODO
-[x] SIR
-[x] SEIR
-[x] Autres Modèles
-[x] Moteur de résolution avec méthode d'euleur explicite (a gauche)
-[ ] Moteur de résolution avec méthode d'euleur explicite (a droite)
-[ ] Moteur de résolution avec méthode d'euleur explicite (a moyenne)
-[ ] Simulation SIR
-[ ] Simulation SEIR
-[ ] Expliquer le moteur
-[ ] Conclusion
+- [x] SIR
+- [x] SEIR
+- [x] Autres Modèles
+- [x] Moteur de résolution avec méthode d'euleur explicite (a gauche)
+- [ ] Moteur de résolution avec méthode d'euleur explicite (a droite)
+- [ ] Moteur de résolution avec méthode d'euleur explicite (a moyenne)
+- [ ] Simulation SIR
+- [X] Simulation SEIR
+- [ ] Expliquer le moteur
+- [ ] Conclusion
 
 # Gifs
 ## Mortalité = Natalité
