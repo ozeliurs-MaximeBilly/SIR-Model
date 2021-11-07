@@ -12,7 +12,7 @@ INIT_BETA = 0.8  # Taux de transmission (0-1)
 INIT_GAMMA = 0.05  # Taux de guérison (0-1)
 INIT_MICRO = 0.01  # Taux de mortalité (0-1)
 INIT_NU = 0.009  # Taux de natalité (0-0.5)
-INIT_EPSILON = 1.0  # Taux de vaccination (0-2)
+INIT_EPSILON = 0.5  # Taux de vaccination (0-2)
 
 # Populations initiales
 N0 = 1000  # Population
@@ -137,7 +137,7 @@ epsilon_slider = Slider(
     ax=plt.axes([0.1, 0.30, 0.8, 0.03], facecolor="lightgoldenrodyellow"),
     label='ϵ (Vaccination)',
     valmin=0,
-    valmax=2,
+    valmax=1,
     valinit=INIT_EPSILON,
     color="lightgreen"
 )
