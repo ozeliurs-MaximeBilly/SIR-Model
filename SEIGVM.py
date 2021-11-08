@@ -19,8 +19,8 @@ INIT_DELTA = 0.2  # Taux de mortalité lié a la maladie (0-1)
 N0 = 1000  # Population
 E0 = 0  # Nombre initial de personnes infectées non-infectieuses
 I0 = 5  # Nombre initial de personnes infectées infectieuses
-R0 = 0  # Nombre initial de personnes retirées
-S0 = N0 - (I0 + R0 + E0)  # Nombre initial de personnes Saines
+G0 = 0  # Nombre initial de personnes guéris
+S0 = N0 - (I0 + G0 + E0)  # Nombre initial de personnes Saines
 V0 = 0  # Nombre initial de personnes vacinnées
 M0 = 0  # Nombre initial de personnes mortes liées a la maladie
 
@@ -29,27 +29,27 @@ SIM_PRECISION = 250
 SIM_MULTIPLIER = 50
 
 
-def solve(S0, E0, I0, R0, V0, M0, alpha, beta, gamma, micro, nu, epsilon, delta):
-    S, E, I, R, V, M = [S0], [E0], [I0], [R0], [V0], [M0]
+def solve(S0, E0, I0, G0, V0, M0, alpha, beta, gamma, micro, nu, epsilon, delta):
+    S, E, I, G, V, M = [S0], [E0], [I0], [G0], [V0], [M0]
     h = 1/SIM_PRECISION
     for o in range(SIM_PRECISION*SIM_MULTIPLIER):
-        St, Et, It, Rt, Vt, Mt = S[o-1], E[o-1], I[o-1], R[o-1], V[o-1], M[o-1]
+        St, Et, It, Gt, Vt, Mt = S[o-1], E[o-1], I[o-1], G[o-1], V[o-1], M[o-1]
 
         #Equations
-        dSdt = -beta*St*It + nu*(St+Et+It+Rt+Vt) - micro*St - epsilon*St
-        dEdt = beta*St*It - alpha*Et - micro*Et + delta*Rt
+        dSdt = -beta*St*It + nu*(St+Et+It+Gt+Vt) - micro*St - epsilon*St
+        dEdt = beta*St*It - alpha*Et - micro*Et + beta*Gt
         dIdt = alpha*Et - gamma*It - micro*It - It*delta
-        dRdt = gamma*It - micro*Rt - epsilon*Rt - delta*Rt
-        dVdt = epsilon*St + epsilon*Rt - micro*Vt
+        dGdt = gamma*It - micro*Gt - epsilon*Gt - beta*Gt
+        dVdt = epsilon*St + epsilon*Gt - micro*Vt
         dMdt = It*delta
 
         S.append(St+h * dSdt)
         E.append(Et+h * dEdt)
         I.append(It+h * dIdt)
-        R.append(Rt+h * dRdt)
+        G.append(Gt+h * dGdt)
         V.append(Vt+h * dVdt)
         M.append(Mt+h * dMdt)
-    return S, E, I, R, V, M
+    return S, E, I, G, V, M
 
 
 # The function to be called anytime a slider's value changes
@@ -57,20 +57,20 @@ def update(_x):
     """
     Méthode appelée a chaque changement des sliders. Recalcule les courbes et les affiche.
     """
-    S, E, I, R, V, M = solve(S0, E0, I0, R0, V0, M0, alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, nu_slider.val, epsilon_slider.val, delta_slider.val)
+    S, E, I, G, V, M = solve(S0, E0, I0, G0, V0, M0, alpha_slider.val, beta_slider.val, gamma_slider.val, micro_slider.val, nu_slider.val, epsilon_slider.val, delta_slider.val)
     line1.set_ydata(S)
     line2.set_ydata(E)
     line3.set_ydata(I)
-    line4.set_ydata(R)
+    line4.set_ydata(G)
     line5.set_ydata(V)
     line6.set_ydata(M)
-    N = [S[i] + E[i] + I[i] + R[i] + V[i] for i in range(len(S))]
+    N = [S[i] + E[i] + I[i] + G[i] + V[i] for i in range(len(S))]
     line7.set_ydata(N)
     fig.canvas.draw_idle()
 
 
-S, E, I, R, V, M = solve(S0, E0, I0, R0, V0, M0, INIT_ALPHA, INIT_BETA, INIT_GAMMA, INIT_MICRO, INIT_NU, INIT_EPSILON, INIT_DELTA)
-N = [S[i] + E[i] + I[i] + R[i] + V[i] for i in range(len(S))]
+S, E, I, G, V, M = solve(S0, E0, I0, G0, V0, M0, INIT_ALPHA, INIT_BETA, INIT_GAMMA, INIT_MICRO, INIT_NU, INIT_EPSILON, INIT_DELTA)
+N = [S[i] + E[i] + I[i] + G[i] + V[i] for i in range(len(S))]
 
 fig, ax = plt.subplots()
 ax.margins(x=0)
@@ -78,7 +78,7 @@ ax.margins(x=0)
 line1, = plt.plot(S, label="Healthy")
 line2, = plt.plot(E, label="Exposed")
 line3, = plt.plot(I, label="Infected")
-line4, = plt.plot(R, label="Recovered")
+line4, = plt.plot(G, label="Guéris")
 line5, = plt.plot(V, label="Vaccinated")
 line6, = plt.plot(M, label="Dead by Disease")
 line7, = plt.plot(N, label="Population")
