@@ -1,6 +1,25 @@
 # SIR-Model
 SIR & SEIR Model for a math exam.
 
+# Description
+
+## SIR.py
+Implémentation du modèle SIR en python grace a solve_ivp.
+
+
+## SEIR.py
+Implémentation du modèle SEIR en python avec un solver utilisant la méthode d'euler explicite.
+
+
+## SEIR (solve_ivp).py
+Implémentation du modèle SEIR en python avec solve_ivp.
+
+## SEIRV.py
+Implémentation d'un modèle 
+
+## SEIGVM.py
+Implémentation du modèle SIR en python.
+
 # The Maths
 ![SEIR Model](https://raw.githubusercontent.com/ozeliurs-MaximeBilly/SIR-Model/main/content/SEIR.jpg)
 
