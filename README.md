@@ -15,10 +15,10 @@ Implémentation du modèle SEIR en python avec un solver utilisant la méthode d
 Implémentation du modèle SEIR en python avec solve_ivp.
 
 ## SEIRV.py
-Implémentation d'un modèle 
+Implémentation d'un modèle fait maison qui ajoute les personnes vaccinées au modèle.
 
 ## SEIGVM.py
-Implémentation du modèle SIR en python.
+Implémentation d'un modèle fait maison qui ajoute les personnes Mortes de la maladie au modèle.
 
 # The Maths
 ![SEIR Model](https://raw.githubusercontent.com/ozeliurs-MaximeBilly/SIR-Model/main/content/SEIR.jpg)
