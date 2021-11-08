@@ -3,21 +3,19 @@ SIR & SEIR Model for a math exam.
 
 # Description
 
-## SIR.py
+### SIR.py
 Implémentation du modèle SIR en python grace a solve_ivp.
 
-
-## SEIR.py
+### SEIR.py
 Implémentation du modèle SEIR en python avec un solver utilisant la méthode d'euler explicite.
 
-
-## SEIR (solve_ivp).py
+### SEIR (solve_ivp).py
 Implémentation du modèle SEIR en python avec solve_ivp.
 
-## SEIRV.py
+### SEIRV.py
 Implémentation d'un modèle fait maison qui ajoute les personnes vaccinées au modèle.
 
-## SEIGVM.py
+### SEIGVM.py
 Implémentation d'un modèle fait maison qui ajoute les personnes Mortes de la maladie au modèle.
 
 # The Maths
