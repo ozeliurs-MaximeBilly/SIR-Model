@@ -8,7 +8,7 @@ from moviepy.video.io.bindings import mplfig_to_npimage
 
 # Configuration de l'affichage de matplotlib
 # matplotlib.use('Qt5Agg') # A utiliser sur Linux
-matplotlib.use('TkAgg') # A utiliser sur Windows
+matplotlib.use('TkAgg')  # A utiliser sur Windows
 
 # Contact rate, beta, and mean recovery rate, gamma, (in 1/days).
 INIT_ALPHA = 0.75  # Taux d'incubation (0-1)
@@ -31,20 +31,20 @@ SIM_MULTIPLIER = 2
 
 def solve(S0, E0, I0, R0, alpha, beta, gamma, micro, nu):
     S, E, I, R = [S0], [E0], [I0], [R0]
-    h = 1/SIM_PRECISION
-    for o in range(SIM_PRECISION*SIM_MULTIPLIER):
-        St, Et, It, Rt = S[o-1], E[o-1], I[o-1], R[o-1]
+    h = 1 / SIM_PRECISION
+    for o in range(SIM_PRECISION * SIM_MULTIPLIER):
+        St, Et, It, Rt = S[o - 1], E[o - 1], I[o - 1], R[o - 1]
 
-        #Equations
-        dSdt = -beta*St*It + nu*(St+Et+It+Rt) - micro*St
-        dEdt = beta*St*It - alpha*Et - micro*Et
-        dIdt = alpha*Et - gamma*It - micro*It
-        dRdt = gamma*It - micro*Rt
+        # Equations
+        dSdt = -beta * St * It + nu * (St + Et + It + Rt) - micro * St
+        dEdt = beta * St * It - alpha * Et - micro * Et
+        dIdt = alpha * Et - gamma * It - micro * It
+        dRdt = gamma * It - micro * Rt
 
-        S.append(St+h* dSdt)
-        E.append(Et+h* dEdt)
-        I.append(It+h* dIdt)
-        R.append(Rt+h* dRdt)
+        S.append(St + h * dSdt)
+        E.append(Et + h * dEdt)
+        I.append(It + h * dIdt)
+        R.append(Rt + h * dRdt)
     return S, E, I, R
 
 
@@ -57,7 +57,20 @@ def update(x):
     """
     Méthode appelée a chaque changement des sliders. Recalcule les courbes et les affiche.
     """
-    a, b, g, m, n = INIT_ALPHA, INIT_BETA, INIT_GAMMA, 0, x
+    if x<1:
+        a, b, g, m, n = INIT_ALPHA, INIT_BETA, INIT_GAMMA, INIT_MICRO, x
+    elif 1 <= x < 2:
+        x -= 1
+        a, b, g, m, n = INIT_ALPHA, INIT_BETA, INIT_GAMMA, x, INIT_NU
+    elif 2 <= x < 3:
+        x -= 2
+        a, b, g, m, n = INIT_ALPHA, INIT_BETA, x, INIT_MICRO, INIT_NU
+    elif 3 <= x < 4:
+        x -= 3
+        a, b, g, m, n = INIT_ALPHA, x, INIT_GAMMA, INIT_MICRO, INIT_NU
+    else:
+        x -= 4
+        a, b, g, m, n = x, INIT_BETA, INIT_GAMMA, INIT_MICRO, INIT_NU
     S, E, I, R = solve(S0, E0, I0, R0, a, b, g, m, n)
     line1.set_ydata(S)
     line2.set_ydata(E)
@@ -147,7 +160,7 @@ nu_slider = Slider(
     color="pink"
 )
 
-#ani = FuncAnimation(fig, update, frames=[x/100 for x in range(0, 100)], init_func=init, blit=True)
+# ani = FuncAnimation(fig, update, frames=[x/100 for x in range(0, 100)], init_func=init, blit=True)
 
-animation = VideoClip(make_frame, duration = 2)
+animation = VideoClip(make_frame, duration=5)
 animation.write_gif("output.gif", fps=20)
