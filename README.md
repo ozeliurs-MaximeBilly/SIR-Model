@@ -42,10 +42,10 @@ Implémentation d'un modèle fait maison qui ajoute les personnes Mortes de la m
 - [x] Moteur de résolution avec méthode d'euleur explicite (a gauche)
 - [ ] Moteur de résolution avec méthode d'euleur explicite (a droite)
 - [ ] Moteur de résolution avec méthode d'euleur explicite (a moyenne)
-- [ ] Simulation SIR
+- [X] Simulation SIR
 - [X] Simulation SEIR
-- [ ] Expliquer le moteur
-- [ ] Conclusion
+- [X] Expliquer le moteur
+- [X] Conclusion
 
 # Gifs
 ## Mortalité = Natalité
